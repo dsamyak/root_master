@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root Master Pro 🌱</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --primary: #10B981;
+  --primary-light: #6EE7B7;
+  --secondary: #8B5CF6;
+  --accent: #F59E0B;
+  --green: #00C896;
+  --red: #FF6057;
+  --blue: #4FC3F7;
+  --purple: #CE93D8;
+  --orange: #FFB347;
+  --bg: #F0FFF8;
+  --card: #FFFFFF;
+  --text: #1A3C34;
+  --text-light: #6B7280;
+  --border: #D1FAE5;
+  --shadow: 0 8px 32px rgba(16,185,129,0.15);
+  --shadow-sm: 0 2px 12px rgba(16,185,129,0.10);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --font: 'Baloo 2', cursive;
+  --font-body: 'Nunito', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.bg-numbers {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bg-num {
+  position: absolute;
+  font-family: var(--font);
+  font-weight: 800;
+  opacity: 0.045;
+  color: var(--primary);
+  animation: floatNum linear infinite;
+  user-select: none;
+}
+@keyframes floatNum {
+  0% { transform: translateY(110vh) rotate(0deg); }
+  100% { transform: translateY(-20vh) rotate(360deg); }
+}
+
+.screen {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 20px;
+  animation: fadeIn 0.4s ease;
+}
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px;
+  border: 2px solid var(--border);
+}
+.btn {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 28px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.2s; }
+.btn:hover::after { opacity: 1; }
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; box-shadow: 0 4px 16px rgba(16,185,129,0.35); }
+.btn-secondary { background: linear-gradient(135deg, var(--secondary), #A78BFA); color: #fff; box-shadow: 0 4px 16px rgba(139,92,246,0.35); }
+.btn-success { background: linear-gradient(135deg, var(--green), #00E6A9); color: #fff; box-shadow: 0 4px 16px rgba(0,200,150,0.35); }
+.btn-accent { background: linear-gradient(135deg, var(--accent), #FFD54F); color: var(--text); box-shadow: 0 4px 16px rgba(245,158,11,0.35); }
+.btn-outline { background: transparent; border: 2.5px solid var(--primary); color: var(--primary); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+.hud-bar {
+  width: 100%; max-width: 800px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+  align-items: center; justify-content: center; margin-bottom: 16px;
+}
+.hud-chip {
+  background: var(--card); border-radius: 50px; padding: 6px 16px;
+  font-family: var(--font); font-weight: 700; font-size: 0.9rem;
+  display: flex; align-items: center; gap: 6px;
+  box-shadow: var(--shadow-sm); border: 2px solid var(--border);
+}
+.hud-chip .icon { font-size: 1.1rem; }
+
+.logo {
+  font-family: var(--font); font-weight: 800;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  text-align: center; line-height: 1.1;
+}
+.subtitle { font-size: 1.05rem; color: var(--text-light); text-align: center; margin-top: 6px; font-weight: 600; }
+
+.age-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px; width: 100%; max-width: 700px; margin-top: 32px;
+}
+.age-card {
+  background: var(--card); border-radius: var(--radius);
+  padding: 28px 20px; text-align: center; cursor: pointer;
+  border: 3px solid transparent; transition: all 0.25s ease; box-shadow: var(--shadow-sm);
+}
+.age-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+.age-card.selected { border-color: var(--primary); background: #F0FFF8; }
+.age-card .emoji { font-size: 3rem; margin-bottom: 10px; }
+.age-card h3 { font-family: var(--font); font-weight: 800; font-size: 1.15rem; color: var(--text); }
+.age-card p { font-size: 0.85rem; color: var(--text-light); margin-top: 4px; }
+
+.games-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px; width: 100%; max-width: 800px; margin-top: 20px;
+}
+.game-card {
+  background: var(--card); border-radius: var(--radius); padding: 20px 14px;
+  text-align: center; cursor: pointer; border: 2.5px solid var(--border);
+  transition: all 0.25s ease; box-shadow: var(--shadow-sm);
+}
+.game-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--primary); }
+.game-card .g-icon { font-size: 2.2rem; margin-bottom: 8px; }
+.game-card h4 { font-family: var(--font); font-weight: 700; font-size: 0.9rem; color: var(--text); line-height: 1.3; }
+
+.xp-bar-wrap { width: 100%; max-width: 300px; background: var(--border); border-radius: 50px; height: 10px; overflow: hidden; }
+.xp-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 50px; transition: width 0.5s ease; }
+
+.combo-banner {
+  position: fixed; top: 80px; left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: linear-gradient(135deg, var(--accent), var(--orange));
+  color: var(--text); font-family: var(--font); font-weight: 800; font-size: 1.3rem;
+  padding: 10px 28px; border-radius: 50px; z-index: 1000;
+  opacity: 0; transition: all 0.3s ease;
+  box-shadow: 0 6px 24px rgba(245,158,11,0.4); pointer-events: none;
+}
+.combo-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.feedback-overlay {
+  position: fixed; inset: 0; display: flex;
+  align-items: center; justify-content: center; z-index: 999; pointer-events: none;
+}
+.feedback-msg {
+  font-family: var(--font); font-weight: 800;
+  font-size: clamp(2rem, 8vw, 5rem); opacity: 0;
+  transition: all 0.15s ease; text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.feedback-msg.correct { color: var(--green); }
+.feedback-msg.wrong { color: var(--red); }
+.feedback-msg.pop { opacity: 1; transform: scale(1.2); }
+
+.confetti-piece {
+  position: fixed; width: 10px; height: 10px; border-radius: 2px;
+  animation: confettiFall 2s ease forwards; pointer-events: none; z-index: 9999;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-10px); } 40% { transform: translateX(10px); }
+  60% { transform: translateX(-6px); } 80% { transform: translateX(6px); }
+}
+.shake { animation: shake 0.4s ease; }
+
+@keyframes greenGlow {
+  0%, 100% { box-shadow: var(--shadow); }
+  50% { box-shadow: 0 0 30px rgba(0,200,150,0.6); }
+}
+.glow-green { animation: greenGlow 0.6s ease; }
+
+@keyframes starPop {
+  0% { transform: scale(0) rotate(-30deg); opacity: 1; }
+  60% { transform: scale(1.4) rotate(15deg); opacity: 1; }
+  100% { transform: scale(0) rotate(45deg); opacity: 0; }
+}
+.star-pop {
+  position: fixed; font-size: 2rem; pointer-events: none; z-index: 9998;
+  animation: starPop 0.8s ease forwards;
+}
+
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,60,52,0.6); backdrop-filter: blur(6px);
+  z-index: 10000; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--card); border-radius: var(--radius); padding: 36px;
+  max-width: 480px; width: 100%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: fadeIn 0.3s ease;
+}
+.modal-box h2 { font-family: var(--font); font-size: 2rem; font-weight: 800; color: var(--text); }
+.modal-box p { margin: 12px 0 20px; color: var(--text-light); font-size: 1rem; }
+
+/* GAME 2 — DRAG & MATCH */
+.match-area { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 500px; }
+.match-col { display: flex; flex-direction: column; gap: 12px; }
+.match-item {
+  background: var(--card); border-radius: var(--radius-sm); padding: 14px 18px;
+  font-family: var(--font); font-weight: 700; font-size: 1.1rem; text-align: center;
+  border: 2.5px solid var(--border); cursor: grab; transition: all 0.2s;
+  box-shadow: var(--shadow-sm); user-select: none;
+}
+.match-item:hover { border-color: var(--primary); transform: scale(1.03); }
+.match-item.dragging { opacity: 0.5; cursor: grabbing; }
+.match-slot {
+  background: var(--bg); border-radius: var(--radius-sm); padding: 14px 18px;
+  font-family: var(--font); font-weight: 700; font-size: 1.1rem; text-align: center;
+  border: 2.5px dashed var(--border); min-height: 54px; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.match-slot.over { border-color: var(--primary); background: #F0FFF8; }
+.match-slot.correct { border-color: var(--green); background: #E8FFF6; color: var(--green); }
+.match-slot.wrong { border-color: var(--red); background: #FFF0EE; animation: shake 0.4s ease; }
+
+/* GAME 3 — VISUAL BUILDER */
+.visual-container {
+  width: 100%; max-width: 520px; padding: 24px;
+  background: var(--card); border-radius: var(--radius);
+  border: 2.5px solid var(--border); box-shadow: var(--shadow); text-align: center;
+}
+.visual-question { font-family: var(--font); font-weight: 800; font-size: 1.8rem; color: var(--primary); margin-bottom: 16px; }
+.groups-display { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 16px 0; }
+.group-box {
+  background: var(--bg); border-radius: var(--radius-sm); border: 2px solid var(--border);
+  padding: 10px; display: flex; flex-wrap: wrap; gap: 4px;
+  min-width: 70px; justify-content: center; align-items: center; animation: fadeIn 0.3s ease;
+}
+.obj-icon { font-size: 1.5rem; animation: popIn 0.3s ease; }
+@keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+.ans-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+.ans-btn {
+  width: 64px; height: 64px; border-radius: 50%;
+  font-family: var(--font); font-weight: 800; font-size: 1.2rem; border: none;
+  cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); color: white;
+}
+.ans-btn:hover { transform: scale(1.1); }
+.ans-btn.correct-ans { background: linear-gradient(135deg, var(--green), #00E6A9); }
+.ans-btn.wrong-ans { background: linear-gradient(135deg, var(--red), #FF8A80); }
+.ans-btn.normal { background: linear-gradient(135deg, var(--primary), var(--primary-light)); }
+
+/* GAME 4 — SPEED TAP */
+.speed-arena {
+  width: 100%; max-width: 480px; background: var(--card);
+  border-radius: var(--radius); padding: 28px;
+  box-shadow: var(--shadow); border: 2.5px solid var(--border); text-align: center;
+}
+.speed-question {
+  font-family: var(--font); font-weight: 800; font-size: clamp(2rem, 8vw, 3.5rem);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 16px 0;
+}
+.speed-timer-bar { width: 100%; background: var(--border); border-radius: 50px; height: 14px; overflow: hidden; margin: 10px 0 20px; }
+.speed-timer-fill { height: 100%; border-radius: 50px; transition: width 0.1s linear, background-color 0.3s; background: linear-gradient(90deg, var(--green), var(--accent)); }
+.speed-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.speed-ans-btn {
+  background: var(--bg); border: 2.5px solid var(--border); border-radius: var(--radius-sm);
+  padding: 18px; font-family: var(--font); font-weight: 800; font-size: 1.4rem;
+  cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); color: var(--text);
+}
+.speed-ans-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.04); }
+
+/* GAME 5 — MEMORY FLIP */
+.memory-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  width: 100%; max-width: 460px;
+}
+.mem-card {
+  aspect-ratio: 1; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font); font-weight: 800;
+  font-size: clamp(0.7rem, 2.5vw, 1rem); color: white;
+  cursor: pointer; transition: all 0.3s ease;
+  perspective: 600px; transform-style: preserve-3d;
+  border: 2px solid transparent; box-shadow: var(--shadow-sm);
+  user-select: none; text-align: center; padding: 4px;
+}
+.mem-card.flipped { background: var(--card); color: var(--text); border-color: var(--border); transform: rotateY(360deg); }
+.mem-card.matched { background: linear-gradient(135deg, var(--green), #00E6A9); color: white; border-color: var(--green); }
+.mem-card.wrong-flip { background: linear-gradient(135deg, var(--red), #FF8A80); color: white; animation: shake 0.4s ease; }
+
+/* GAME 6 — RUNNER */
+.runner-arena {
+  width: 100%; max-width: 480px; height: 160px;
+  background: linear-gradient(180deg, #0D4B36 0%, #1A6B4A 60%, #2D9CDB 100%);
+  border-radius: var(--radius); overflow: hidden; position: relative;
+  box-shadow: var(--shadow); border: 2.5px solid var(--border);
+}
+.runner-speed {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 30px;
+  background: repeating-linear-gradient(90deg, transparent 0, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 41px);
+  animation: runnerBg 1s linear infinite;
+}
+@keyframes runnerBg { from { background-position: 0; } to { background-position: 41px; } }
+.runner-ground {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
+  background: linear-gradient(180deg, #2D9CDB, #1A7B52);
+}
+.runner-character {
+  position: absolute; bottom: 28px; left: 40px; font-size: 2.5rem;
+  animation: runnerBob 0.4s ease infinite alternate;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+@keyframes runnerBob { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+.runner-obstacle {
+  position: absolute; bottom: 26px; right: -100px; font-size: 1.2rem;
+  font-family: var(--font); font-weight: 800; color: white;
+  background: rgba(255,80,87,0.9); padding: 6px 12px;
+  border-radius: var(--radius-sm); border: 2px solid rgba(255,255,255,0.3);
+  text-align: center; min-width: 80px;
+}
+.runner-ans-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
+.runner-ans {
+  padding: 12px 20px; border-radius: 50px; font-family: var(--font);
+  font-weight: 800; font-size: 1.1rem; border: none; cursor: pointer;
+  background: var(--card); border: 2.5px solid var(--border);
+  transition: all 0.2s; box-shadow: var(--shadow-sm); color: var(--text);
+}
+.runner-ans:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* GAME 7 — GRID CHALLENGE */
+.grid-instruction {
+  font-family: var(--font); font-weight: 800; font-size: 1.1rem; color: var(--primary);
+  text-align: center; margin-bottom: 14px;
+  background: var(--card); padding: 12px 20px; border-radius: 50px;
+  border: 2px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.number-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  gap: 6px; width: 100%; max-width: 500px;
+}
+.grid-cell {
+  aspect-ratio: 1; border-radius: 8px; background: var(--card);
+  border: 2px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-family: var(--font); font-weight: 700;
+  font-size: clamp(0.6rem, 2vw, 0.85rem); cursor: pointer;
+  transition: all 0.2s; color: var(--text); box-shadow: var(--shadow-sm);
+}
+.grid-cell:hover { border-color: var(--primary); background: #F0FFF8; transform: scale(1.08); }
+.grid-cell.selected { background: var(--primary); color: white; border-color: var(--primary); }
+.grid-cell.correct { background: var(--green); color: white; border-color: var(--green); }
+.grid-cell.wrong-sel { background: var(--red); color: white; border-color: var(--red); animation: shake 0.4s ease; }
+.grid-cell.revealed { background: linear-gradient(135deg, var(--green), #00E6A9); color: white; border-color: var(--green); }
+
+/* PRACTICE MODE */
+.practice-table-list {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 10px; width: 100%; max-width: 560px; margin: 16px 0;
+}
+.practice-num-btn {
+  padding: 10px 6px; border-radius: var(--radius-sm); border: 2.5px solid var(--border);
+  background: var(--card); font-family: var(--font); font-weight: 800; font-size: 0.85rem;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: all 0.2s; color: var(--text); box-shadow: var(--shadow-sm); text-align: center; line-height: 1.3;
+}
+.practice-num-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.08); }
+.practice-num-btn.mastered { background: linear-gradient(135deg, var(--green), #00E6A9); color: white; border-color: var(--green); }
+.practice-step {
+  background: var(--card); border-radius: var(--radius-sm); padding: 14px 20px;
+  display: flex; align-items: center; gap: 14px;
+  border: 2px solid var(--border); box-shadow: var(--shadow-sm); animation: fadeIn 0.3s ease;
+}
+.practice-step .eq { font-family: var(--font); font-weight: 700; font-size: 1.2rem; color: var(--text); min-width: 120px; }
+.practice-step .eq-ans { font-family: var(--font); font-weight: 800; font-size: 1.4rem; color: var(--primary); }
+.practice-dots { display: flex; flex-wrap: wrap; gap: 4px; max-width: 180px; }
+
+/* DASHBOARD */
+.dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; width: 100%; max-width: 600px; margin-top: 20px; }
+.dash-card { background: var(--card); border-radius: var(--radius); padding: 18px; text-align: center; border: 2.5px solid var(--border); box-shadow: var(--shadow-sm); }
+.dash-card .big { font-family: var(--font); font-weight: 800; font-size: 1.8rem; color: var(--primary); }
+.dash-card .lbl { font-size: 0.8rem; color: var(--text-light); font-weight: 600; margin-top: 4px; }
+.table-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; justify-content: center; max-width: 560px; }
+.table-badge { padding: 6px 14px; border-radius: 50px; font-family: var(--font); font-weight: 700; font-size: 0.85rem; background: var(--bg); border: 2px solid var(--border); color: var(--text-light); }
+.table-badge.done { background: linear-gradient(135deg, var(--green), #00E6A9); color: white; border-color: var(--green); }
+
+/* ROOT TYPE TOGGLE */
+.root-toggle { display: flex; gap: 8px; background: var(--bg); border-radius: 50px; padding: 4px; border: 2px solid var(--border); margin: 10px 0; }
+.root-toggle-btn { padding: 8px 20px; border-radius: 50px; border: none; font-family: var(--font); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; background: transparent; color: var(--text-light); }
+.root-toggle-btn.active { background: var(--primary); color: white; box-shadow: var(--shadow-sm); }
+
+@media (max-width: 500px) {
+  .card { padding: 18px; }
+  .memory-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .number-grid { grid-template-columns: repeat(6, 1fr); }
+  .speed-answers { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 768px) { .runner-arena { height: 180px; } }
+
+.back-btn {
+  display: flex; align-items: center; gap: 6px; background: none; border: none;
+  color: var(--text-light); font-family: var(--font-body); font-weight: 700; font-size: 0.95rem;
+  cursor: pointer; padding: 6px 0; transition: color 0.2s; align-self: flex-start;
+}
+.back-btn:hover { color: var(--primary); }
+
+/* ROOT TYPE BADGE */
+.root-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white; font-family: var(--font); font-weight: 800; font-size: 0.85rem;
+  padding: 5px 14px; border-radius: 50px; box-shadow: var(--shadow-sm);
+}
+</style>
+</head>
+<body>
+
+<div class="bg-numbers" id="bgNumbers"></div>
+<div class="combo-banner" id="comboBanner">⚡ Combo x<span id="comboNum">0</span>!</div>
+<div class="feedback-overlay">
+  <div class="feedback-msg" id="feedbackMsg">✓</div>
+</div>
+
+<div class="modal-overlay" id="levelUpModal">
+  <div class="modal-box">
+    <div style="font-size:4rem">🌱</div>
+    <h2>Level Up!</h2>
+    <p id="levelUpText">You reached Level <strong id="newLevelNum">2</strong>!</p>
+    <button class="btn btn-primary" onclick="closeModal('levelUpModal')">Keep Going! 🌱</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="gameOverModal">
+  <div class="modal-box">
+    <div style="font-size:4rem">🌿</div>
+    <h2>Time's Up!</h2>
+    <p id="gameOverText">You scored <strong id="goScore">0</strong> points!</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="closeModal('gameOverModal');showScreen('menu-screen')">Menu</button>
+      <button class="btn btn-success" id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME -->
+<div class="screen active" id="welcome-screen">
+  <div style="height:40px"></div>
+  <div class="logo">🌱 Root Master Pro</div>
+  <div class="subtitle">Master Square Roots & Cube Roots Through Play!</div>
+  <div style="height:24px"></div>
+  <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);text-align:center">Choose your level to begin:</div>
+  <div class="age-grid">
+    <div class="age-card" onclick="selectAge(0,this)">
+      <div class="emoji">🌱</div>
+      <h3>Beginner</h3>
+      <p>√1–√25 &amp; ∛1–∛27</p>
+    </div>
+    <div class="age-card" onclick="selectAge(1,this)">
+      <div class="emoji">🌿</div>
+      <h3>Intermediate</h3>
+      <p>√1–√100 &amp; ∛1–∛125</p>
+    </div>
+    <div class="age-card" onclick="selectAge(2,this)">
+      <div class="emoji">🌳</div>
+      <h3>Advanced</h3>
+      <p>√1–√225 &amp; ∛1–∛1000</p>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center">
+    <span style="font-family:var(--font);font-weight:700;color:var(--text-light)">Practice:</span>
+    <div class="root-toggle" id="welcomeRootToggle">
+      <button class="root-toggle-btn active" onclick="setRootType('square',this)">√ Square</button>
+      <button class="root-toggle-btn" onclick="setRootType('cube',this)">∛ Cube</button>
+      <button class="root-toggle-btn" onclick="setRootType('both',this)">Both</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <button class="btn btn-primary" style="font-size:1.1rem;padding:14px 40px" onclick="goToMenu()">Start Learning! 🌱</button>
+  <div style="height:16px"></div>
+  <button class="btn btn-outline" style="font-size:0.9rem" onclick="showScreen('dashboard-screen')">📊 My Progress</button>
+</div>
+
+<!-- MENU -->
+<div class="screen" id="menu-screen">
+  <div style="width:100%;max-width:800px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <div class="logo" style="font-size:1.8rem">🌱 Root Master Pro</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="menu-xp">0 XP</span></div>
+        <div class="hud-chip"><span class="icon">🏅</span>Level <span id="menu-level">1</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="menu-acc">--%</span></div>
+        <div class="hud-chip" id="menu-root-badge">√ Square</div>
+      </div>
+    </div>
+    <div class="xp-bar-wrap" style="max-width:100%;margin-bottom:20px"><div class="xp-bar-fill" id="menuXpBar" style="width:0%"></div></div>
+    <div style="font-family:var(--font);font-weight:800;font-size:1.1rem;color:var(--text);margin-bottom:12px">🎮 Choose a Game:</div>
+    <div class="games-grid">
+      <div class="game-card" onclick="startGame(2)"><div class="g-icon">🍀</div><h4>Drag & Match Board</h4></div>
+      <div class="game-card" onclick="startGame(3)"><div class="g-icon">🔬</div><h4>Visual Builder</h4></div>
+      <div class="game-card" onclick="startGame(4)"><div class="g-icon">⚡</div><h4>Speed Tap Challenge</h4></div>
+      <div class="game-card" onclick="startGame(5)"><div class="g-icon">🃏</div><h4>Memory Flip</h4></div>
+      <div class="game-card" onclick="startGame(6)"><div class="g-icon">🏃</div><h4>Root Runner</h4></div>
+      <div class="game-card" onclick="startGame(7)"><div class="g-icon">🌐</div><h4>Grid Challenge</h4></div>
+      <div class="game-card" style="border-color:var(--accent);background:#FFFBEE" onclick="showScreen('practice-screen')"><div class="g-icon">📖</div><h4>Practice Mode</h4></div>
+    </div>
+    <div style="height:20px"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="showScreen('dashboard-screen')">📊 Dashboard</button>
+      <button class="btn btn-outline" onclick="showScreen('welcome-screen')">👤 Change Level</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME 2 — DRAG & MATCH -->
+<div class="screen" id="game2-screen">
+  <div style="width:100%;max-width:540px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g2-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g2-score">0/0</span></div>
+      </div>
+    </div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1.1rem;color:var(--text);text-align:center;margin-bottom:16px">Drag the answers to match the roots!</div>
+    <div class="match-area">
+      <div class="match-col" id="matchEquations"></div>
+      <div class="match-col" id="matchAnswers"></div>
+    </div>
+    <div style="height:16px"></div>
+    <div style="text-align:center"><button class="btn btn-success" id="g2CheckBtn" onclick="checkMatchGame()">Check Answers ✓</button></div>
+  </div>
+</div>
+
+<!-- GAME 3 — VISUAL BUILDER -->
+<div class="screen" id="game3-screen">
+  <div style="width:100%;max-width:520px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g3-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g3-score">0</span></div>
+      </div>
+    </div>
+    <div class="visual-container">
+      <div class="visual-question" id="visualQuestion"></div>
+      <div style="font-family:var(--font);font-weight:700;font-size:0.95rem;color:var(--text-light);margin-bottom:8px" id="visualHint"></div>
+      <div class="groups-display" id="groupsDisplay"></div>
+      <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin-bottom:8px">What is the root?</div>
+      <div class="ans-btns" id="visualAnsBtns"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME 4 — SPEED TAP -->
+<div class="screen" id="game4-screen">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g4-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🔥</span><span id="g4-combo">0</span></div>
+        <div class="hud-chip"><span class="icon">⏱️</span><span id="g4-time">60s</span></div>
+      </div>
+    </div>
+    <div class="speed-arena">
+      <div class="speed-timer-bar"><div class="speed-timer-fill" id="speedTimerFill" style="width:100%"></div></div>
+      <div class="speed-question" id="speedQuestion">√? = ?</div>
+      <div style="font-size:0.85rem;color:var(--text-light);font-weight:600;margin-bottom:10px">Tap the correct answer!</div>
+      <div class="speed-answers" id="speedAnswers"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light)">Score: <span id="g4-score">0</span></div>
+  </div>
+</div>
+
+<!-- GAME 5 — MEMORY FLIP -->
+<div class="screen" id="game5-screen">
+  <div style="width:100%;max-width:500px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g5-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🃏</span><span id="g5-pairs">0/0</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin-bottom:12px">Match each root with its answer!</div>
+    <div class="memory-grid" id="memoryGrid"></div>
+  </div>
+</div>
+
+<!-- GAME 6 — ROOT RUNNER -->
+<div class="screen" id="game6-screen">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g6-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">📏</span><span id="g6-dist">0m</span></div>
+      </div>
+    </div>
+    <div class="runner-arena">
+      <div class="runner-speed"></div>
+      <div class="runner-character" id="runnerChar">🧮</div>
+      <div class="runner-ground"></div>
+      <div class="runner-obstacle" id="runnerObstacle" style="display:none"></div>
+    </div>
+    <div style="text-align:center;font-family:var(--font);font-weight:800;font-size:1.2rem;color:var(--primary);margin:10px 0 6px" id="runnerQ">?</div>
+    <div class="runner-ans-row" id="runnerAns"></div>
+  </div>
+</div>
+
+<!-- GAME 7 — GRID CHALLENGE -->
+<div class="screen" id="game7-screen">
+  <div style="width:100%;max-width:500px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g7-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g7-score">0</span></div>
+      </div>
+    </div>
+    <div class="grid-instruction" id="gridInstruction">Select all perfect squares</div>
+    <div class="number-grid" id="numberGrid"></div>
+    <div style="height:14px"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-success" onclick="checkGrid()">Check ✓</button>
+      <button class="btn btn-outline" onclick="nextGridRound()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="screen" id="practice-screen">
+  <div style="width:100%;max-width:560px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="showScreen('menu-screen')">← Back</button>
+      <div class="hud-chip"><span class="icon">📖</span>Practice Mode</div>
+    </div>
+    <div style="font-family:var(--font);font-weight:800;font-size:1.4rem;color:var(--text);margin-bottom:10px">Practice Root Tables</div>
+    <div class="root-toggle" id="practiceRootToggle">
+      <button class="root-toggle-btn active" onclick="setPracticeType('square',this)">√ Square Roots</button>
+      <button class="root-toggle-btn" onclick="setPracticeType('cube',this)">∛ Cube Roots</button>
+    </div>
+    <div style="font-size:0.9rem;color:var(--text-light);font-weight:600;margin:10px 0 14px">Green = mastered in games</div>
+    <div class="practice-table-list" id="practiceTableList"></div>
+    <div id="practiceSteps" style="display:none">
+      <div style="font-family:var(--font);font-weight:800;font-size:1.3rem;color:var(--primary);margin:16px 0 10px" id="practiceTitle"></div>
+      <div id="practiceStepsList" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div style="height:14px"></div>
+      <button class="btn btn-outline" onclick="document.getElementById('practiceSteps').style.display='none'">← Choose Another</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="dashboard-screen">
+  <div style="width:100%;max-width:600px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="showScreen('menu-screen')">← Back</button>
+      <div style="font-family:var(--font);font-weight:800;font-size:1.5rem;color:var(--text)">🌳 My Progress</div>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dash-card"><div class="big" id="dash-xp">0</div><div class="lbl">⭐ Total XP</div></div>
+      <div class="dash-card"><div class="big" id="dash-level">1</div><div class="lbl">🏆 Level</div></div>
+      <div class="dash-card"><div class="big" id="dash-acc">0%</div><div class="lbl">🎯 Accuracy</div></div>
+      <div class="dash-card"><div class="big" id="dash-streak">0</div><div class="lbl">🔥 Best Streak</div></div>
+      <div class="dash-card"><div class="big" id="dash-sq">0</div><div class="lbl">√ Sq Roots Mastered</div></div>
+      <div class="dash-card"><div class="big" id="dash-cb">0</div><div class="lbl">∛ Cu Roots Mastered</div></div>
+    </div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin:20px 0 6px">Square Root Progress:</div>
+    <div class="table-badges" id="sqBadges"></div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin:16px 0 6px">Cube Root Progress:</div>
+    <div class="table-badges" id="cbBadges"></div>
+    <div style="height:16px"></div>
+    <button class="btn btn-primary" onclick="showScreen('menu-screen')">Back to Menu</button>
+  </div>
+</div>
+
+<script>
+// =====================================================================
+// DATA: Perfect squares and cubes
+// =====================================================================
+const SQUARE_ROOTS = [
+  {n:1,root:1},{n:4,root:2},{n:9,root:3},{n:16,root:4},{n:25,root:5},
+  {n:36,root:6},{n:49,root:7},{n:64,root:8},{n:81,root:9},{n:100,root:10},
+  {n:121,root:11},{n:144,root:12},{n:169,root:13},{n:196,root:14},{n:225,root:15}
+];
+const CUBE_ROOTS = [
+  {n:1,root:1},{n:8,root:2},{n:27,root:3},{n:64,root:4},{n:125,root:5},
+  {n:216,root:6},{n:343,root:7},{n:512,root:8},{n:729,root:9},{n:1000,root:10}
+];
+
+const AGE_CONFIG = [
+  { label:'Beginner',  sqMax:5,  cbMax:3 },
+  { label:'Intermediate', sqMax:10, cbMax:5 },
+  { label:'Advanced',  sqMax:15, cbMax:10 }
+];
+
+const OBJECTS = ['🌱','🍀','🌿','🌾','🌸','🌻','🍁','🍄','🎋','🪴'];
+const COLORS = ['#10B981','#8B5CF6','#F59E0B','#00C896','#4FC3F7','#CE93D8','#FF7043','#26C6DA'];
+
+// =====================================================================
+// STATE
+// =====================================================================
+const STATE = {
+  ageGroup: 1,
+  rootType: 'square',   // 'square', 'cube', 'both'
+  xp: 0, level: 1, combo: 0, bestCombo: 0,
+  totalCorrect: 0, totalAnswered: 0,
+  masteredSquares: new Set(),
+  masteredCubes: new Set(),
+  currentGame: null,
+  adaptSpeed: 1,
+  recentResults: [],
+  practiceType: 'square',
+  get accuracy() {
+    if (this.totalAnswered === 0) return 0;
+    return Math.round((this.totalCorrect / this.totalAnswered) * 100);
+  },
+  get xpForNextLevel() { return this.level * 120; }
+};
+
+const gameTimers = [];
+function stopAllGameTimers() {
+  gameTimers.forEach(t => clearInterval(t));
+  gameTimers.length = 0;
+}
+
+// =====================================================================
+// HELPER: Generate a question based on current settings
+// =====================================================================
+function getPool() {
+  const cfg = AGE_CONFIG[STATE.ageGroup];
+  let pool = [];
+  if (STATE.rootType === 'square' || STATE.rootType === 'both')
+    pool = pool.concat(SQUARE_ROOTS.slice(0, cfg.sqMax));
+  if (STATE.rootType === 'cube' || STATE.rootType === 'both')
+    pool = pool.concat(CUBE_ROOTS.slice(0, cfg.cbMax));
+  return pool;
+}
+
+function generateQuestion() {
+  const pool = getPool();
+  const item = pool[Math.floor(Math.random() * pool.length)];
+  const isSquare = SQUARE_ROOTS.includes(item);
+  return {
+    n: item.n,
+    root: item.root,
+    type: isSquare ? 'square' : 'cube',
+    symbol: isSquare ? '√' : '∛',
+    display: isSquare ? `√${item.n}` : `∛${item.n}`
+  };
+}
+
+function generateWrongAnswers(correct, count) {
+  const pool = getPool();
+  const allRoots = [...new Set(pool.map(p => p.root))];
+  const wrongs = new Set();
+  const candidates = allRoots.filter(r => r !== correct);
+  shuffle(candidates);
+  while (wrongs.size < Math.min(count, candidates.length)) {
+    wrongs.add(candidates[wrongs.size]);
+  }
+  // pad with nearby
+  let extra = correct;
+  while (wrongs.size < count) {
+    extra++;
+    if (extra !== correct) wrongs.add(extra);
+  }
+  return [...wrongs].slice(0, count);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+// =====================================================================
+// BG NUMBERS
+// =====================================================================
+function initBgNumbers() {
+  const container = document.getElementById('bgNumbers');
+  container.innerHTML = '';
+  const syms = ['√','∛','²','³','=','1','4','9','16','25','64','√','∛'];
+  for (let i = 0; i < 22; i++) {
+    const el = document.createElement('div');
+    el.className = 'bg-num';
+    el.textContent = syms[Math.floor(Math.random() * syms.length)];
+    const size = 30 + Math.random() * 80;
+    el.style.cssText = `left:${Math.random()*100}%;font-size:${size}px;animation-duration:${10+Math.random()*20}s;animation-delay:${-Math.random()*20}s;`;
+    container.appendChild(el);
+  }
+}
+initBgNumbers();
+
+// =====================================================================
+// SCREENS
+// =====================================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  if (id === 'dashboard-screen') updateDashboard();
+  if (id === 'practice-screen') buildPracticeList();
+  if (id === 'menu-screen') updateMenuHud();
+}
+
+function selectAge(idx, el) {
+  document.querySelectorAll('.age-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  STATE.ageGroup = idx;
+}
+
+function setRootType(type, btn) {
+  STATE.rootType = type;
+  document.querySelectorAll('#welcomeRootToggle .root-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function goToMenu() { showScreen('menu-screen'); updateMenuHud(); }
+
+function exitGame() { stopAllGameTimers(); showScreen('menu-screen'); }
+
+function updateMenuHud() {
+  document.getElementById('menu-xp').textContent = STATE.xp + ' XP';
+  document.getElementById('menu-level').textContent = STATE.level;
+  document.getElementById('menu-acc').textContent = STATE.accuracy + '%';
+  const pct = Math.min(100, (STATE.xp / STATE.xpForNextLevel) * 100);
+  document.getElementById('menuXpBar').style.width = pct + '%';
+  const labels = { square: '√ Square', cube: '∛ Cube', both: '√ + ∛ Both' };
+  document.getElementById('menu-root-badge').textContent = labels[STATE.rootType] || '√ Square';
+}
+
+// =====================================================================
+// XP & LEVELING
+// =====================================================================
+function addXP(amount) {
+  STATE.xp += amount;
+  while (STATE.xp >= STATE.xpForNextLevel) {
+    STATE.xp -= STATE.xpForNextLevel;
+    STATE.level++;
+    showLevelUp();
+  }
+  updateMenuHud();
+}
+
+function showLevelUp() {
+  document.getElementById('newLevelNum').textContent = STATE.level;
+  document.getElementById('levelUpText').innerHTML = `You reached Level <strong>${STATE.level}</strong>! 🎊`;
+  document.getElementById('levelUpModal').classList.add('open');
+  triggerConfetti();
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// =====================================================================
+// COMBO
+// =====================================================================
+function incrementCombo() {
+  STATE.combo++;
+  if (STATE.combo > STATE.bestCombo) STATE.bestCombo = STATE.combo;
+  if (STATE.combo >= 3) {
+    document.getElementById('comboNum').textContent = STATE.combo;
+    const banner = document.getElementById('comboBanner');
+    banner.classList.add('show');
+    setTimeout(() => banner.classList.remove('show'), 1800);
+  }
+}
+function resetCombo() { STATE.combo = 0; }
+
+// =====================================================================
+// FEEDBACK
+// =====================================================================
+function showFeedback(correct) {
+  const msg = document.getElementById('feedbackMsg');
+  msg.textContent = correct ? '✓' : '✗';
+  msg.className = 'feedback-msg ' + (correct ? 'correct' : 'wrong');
+  msg.classList.add('pop');
+  setTimeout(() => { msg.classList.remove('pop'); setTimeout(() => { msg.style.opacity = 0; }, 150); }, 500);
+}
+
+function showStarPop(x, y) {
+  const el = document.createElement('div');
+  el.className = 'star-pop';
+  el.textContent = ['⭐','✨','💫','🌟'][Math.floor(Math.random() * 4)];
+  el.style.cssText = `left:${x}px;top:${y}px;`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 900);
+}
+
+// =====================================================================
+// CONFETTI
+// =====================================================================
+function triggerConfetti() {
+  for (let i = 0; i < 40; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;top:-10px;background:${COLORS[Math.floor(Math.random()*COLORS.length)]};animation-delay:${Math.random()*0.5}s;`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2500);
+  }
+}
+
+// =====================================================================
+// RECORD ANSWER
+// =====================================================================
+function recordAnswer(q, correct) {
+  STATE.totalAnswered++;
+  if (correct) {
+    STATE.totalCorrect++;
+    incrementCombo();
+    if (q.type === 'square') STATE.masteredSquares.add(q.n);
+    else STATE.masteredCubes.add(q.n);
+  } else { resetCombo(); }
+  STATE.recentResults.push(correct);
+  if (STATE.recentResults.length > 10) STATE.recentResults.shift();
+  const recentAcc = STATE.recentResults.filter(Boolean).length / STATE.recentResults.length;
+  if (STATE.recentResults.length >= 5) {
+    STATE.adaptSpeed = recentAcc > 0.8 ? Math.min(2, STATE.adaptSpeed + 0.1) : Math.max(0.4, STATE.adaptSpeed - 0.1);
+  }
+}
+
+// =====================================================================
+// GAME LAUNCHER
+// =====================================================================
+function startGame(num) {
+  stopAllGameTimers();
+  STATE.currentGame = num;
+  showScreen('game' + num + '-screen');
+  if (num === 2) initGame2();
+  else if (num === 3) initGame3();
+  else if (num === 4) initGame4();
+  else if (num === 5) initGame5();
+  else if (num === 6) initGame6();
+  else if (num === 7) initGame7();
+  document.getElementById('playAgainBtn').onclick = () => { closeModal('gameOverModal'); startGame(num); };
+}
+
+// =====================================================================
+// GAME 2: DRAG & MATCH
+// =====================================================================
+let g2 = { xp: 0, pairs: [], dragItem: null, slots: {}, score: 0, total: 0 };
+
+function initGame2() {
+  g2.xp = 0; g2.score = 0;
+  const pool = getPool();
+  const shuffled = shuffle([...pool]);
+  const items = shuffled.slice(0, Math.min(5, shuffled.length));
+  g2.total = items.length;
+
+  const equations = document.getElementById('matchEquations');
+  const answers = document.getElementById('matchAnswers');
+  equations.innerHTML = '';
+  answers.innerHTML = '';
+  g2.slots = {};
+
+  items.forEach(item => {
+    const isSquare = SQUARE_ROOTS.includes(item);
+    const symbol = isSquare ? '√' : '∛';
+    const eq = document.createElement('div');
+    eq.className = 'match-item';
+    eq.textContent = `${symbol}${item.n} = ?`;
+    eq.dataset.answer = item.root;
+
+    const slot = document.createElement('div');
+    slot.className = 'match-slot';
+    slot.dataset.expected = item.root;
+    slot.textContent = '?';
+    equations.appendChild(eq);
+    answers.appendChild(slot);
+    g2.slots[item.root] = slot;
+  });
+
+  const answerItems = items.map(i => {
+    const d = document.createElement('div');
+    d.className = 'match-item';
+    d.textContent = i.root;
+    d.draggable = true;
+    d.dataset.value = i.root;
+    d.addEventListener('dragstart', e => { g2.dragItem = d; d.classList.add('dragging'); e.dataTransfer.setData('text', i.root); });
+    d.addEventListener('dragend', () => d.classList.remove('dragging'));
+    // Touch support
+    d.addEventListener('touchstart', touchStartG2, { passive: true });
+    d.addEventListener('touchmove', touchMoveG2, { passive: false });
+    d.addEventListener('touchend', touchEndG2);
+    return d;
+  });
+  shuffle(answerItems);
+  const ansCol = document.createElement('div');
+  ansCol.className = 'match-col';
+  ansCol.id = 'dragAnswerCol';
+  ansCol.style.cssText = 'position:relative;';
+  answerItems.forEach(a => ansCol.appendChild(a));
+  answers.parentElement.appendChild(ansCol);
+  answers.remove();
+
+  document.querySelectorAll('.match-slot').forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      slot.classList.remove('over');
+      const val = e.dataTransfer.getData('text');
+      slot.textContent = val;
+      slot.dataset.placed = val;
+    });
+  });
+
+  document.getElementById('g2-xp').textContent = g2.xp;
+  document.getElementById('g2-score').textContent = g2.score + '/' + g2.total;
+}
+
+let touchG2El = null, touchG2Clone = null;
+function touchStartG2(e) {
+  touchG2El = e.currentTarget;
+  const rect = touchG2El.getBoundingClientRect();
+  touchG2Clone = touchG2El.cloneNode(true);
+  touchG2Clone.style.cssText = `position:fixed;z-index:9999;opacity:0.8;width:${rect.width}px;pointer-events:none;left:${rect.left}px;top:${rect.top}px;`;
+  document.body.appendChild(touchG2Clone);
+}
+function touchMoveG2(e) {
+  e.preventDefault();
+  if (!touchG2Clone) return;
+  const t = e.touches[0];
+  touchG2Clone.style.left = (t.clientX - 50) + 'px';
+  touchG2Clone.style.top = (t.clientY - 25) + 'px';
+}
+function touchEndG2(e) {
+  if (!touchG2Clone || !touchG2El) return;
+  const t = e.changedTouches[0];
+  document.querySelectorAll('.match-slot').forEach(slot => {
+    const r = slot.getBoundingClientRect();
+    if (t.clientX >= r.left && t.clientX <= r.right && t.clientY >= r.top && t.clientY <= r.bottom) {
+      slot.textContent = touchG2El.dataset.value;
+      slot.dataset.placed = touchG2El.dataset.value;
+    }
+  });
+  touchG2Clone.remove(); touchG2Clone = null; touchG2El = null;
+}
+
+function checkMatchGame() {
+  let correct = 0;
+  document.querySelectorAll('.match-slot').forEach(slot => {
+    const placed = slot.dataset.placed;
+    const expected = slot.dataset.expected;
+    if (placed == expected) { slot.classList.add('correct'); correct++; }
+    else { slot.classList.remove('correct'); slot.classList.add('wrong'); }
+  });
+  g2.score = correct;
+  document.getElementById('g2-score').textContent = correct + '/' + g2.total;
+  const xpGain = correct * 12;
+  g2.xp += xpGain;
+  document.getElementById('g2-xp').textContent = g2.xp;
+  addXP(xpGain);
+  showFeedback(correct === g2.total);
+  if (correct === g2.total) { triggerConfetti(); showStarPop(window.innerWidth / 2, 200); }
+  setTimeout(() => initGame2(), 2200);
+}
+
+// =====================================================================
+// GAME 3: VISUAL BUILDER
+// =====================================================================
+let g3 = { xp: 0, score: 0 };
+
+function initGame3() { g3.xp = 0; g3.score = 0; nextG3Question(); }
+
+function nextG3Question() {
+  const q = generateQuestion();
+  document.getElementById('visualQuestion').textContent = `${q.symbol}${q.n} = ?`;
+
+  const display = document.getElementById('groupsDisplay');
+  display.innerHTML = '';
+
+  const hint = document.getElementById('visualHint');
+  if (q.type === 'square') {
+    hint.textContent = `${q.n} = ${q.root} × ${q.root} (a ${q.root}×${q.root} grid)`;
+    // Show grid of dots
+    const box = document.createElement('div');
+    box.className = 'group-box';
+    box.style.width = (q.root * 28 + 20) + 'px';
+    for (let r = 0; r < q.root; r++) {
+      for (let c = 0; c < q.root; c++) {
+        const dot = document.createElement('span');
+        dot.className = 'obj-icon';
+        dot.style.animationDelay = ((r * q.root + c) * 0.03) + 's';
+        dot.textContent = OBJECTS[q.root % OBJECTS.length];
+        box.appendChild(dot);
+      }
+    }
+    display.appendChild(box);
+  } else {
+    hint.textContent = `${q.n} = ${q.root} × ${q.root} × ${q.root} (${q.root} layers of ${q.root}×${q.root})`;
+    // Show cube layers
+    for (let layer = 0; layer < Math.min(q.root, 4); layer++) {
+      const box = document.createElement('div');
+      box.className = 'group-box';
+      for (let i = 0; i < q.root * q.root; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'obj-icon';
+        dot.style.animationDelay = (i * 0.03) + 's';
+        dot.textContent = OBJECTS[(q.root + layer) % OBJECTS.length];
+        box.appendChild(dot);
+      }
+      const lbl = document.createElement('div');
+      lbl.style.cssText = 'font-size:0.7rem;font-weight:700;color:var(--text-light);width:100%;text-align:center;';
+      lbl.textContent = `Layer ${layer + 1}`;
+      box.appendChild(lbl);
+      display.appendChild(box);
+    }
+    if (q.root > 4) {
+      const more = document.createElement('div');
+      more.style.cssText = 'font-family:var(--font);font-weight:800;font-size:1.2rem;color:var(--text-light);align-self:center;';
+      more.textContent = `...+${q.root - 4} more`;
+      display.appendChild(more);
+    }
+  }
+
+  const wrongs = generateWrongAnswers(q.root, 3);
+  const opts = shuffle([q.root, ...wrongs]);
+  const btns = document.getElementById('visualAnsBtns');
+  btns.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'ans-btn normal';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      const correct = opt === q.root;
+      recordAnswer(q, correct);
+      showFeedback(correct);
+      btn.className = 'ans-btn ' + (correct ? 'correct-ans' : 'wrong-ans');
+      if (correct) {
+        g3.score++;
+        g3.xp += 10;
+        addXP(10);
+        showStarPop(btn.getBoundingClientRect().left, btn.getBoundingClientRect().top);
+      }
+      document.getElementById('g3-score').textContent = g3.score;
+      document.getElementById('g3-xp').textContent = g3.xp;
+      setTimeout(() => nextG3Question(), 900);
+    };
+    btns.appendChild(btn);
+  });
+}
+
+// =====================================================================
+// GAME 4: SPEED TAP
+// =====================================================================
+let g4 = { xp: 0, score: 0, combo: 0, timeLeft: 60, interval: null };
+
+function initGame4() {
+  g4.xp = 0; g4.score = 0; g4.combo = 0; g4.timeLeft = 60;
+  document.getElementById('g4-xp').textContent = 0;
+  document.getElementById('g4-score').textContent = 0;
+  document.getElementById('g4-combo').textContent = 0;
+  document.getElementById('g4-time').textContent = '60s';
+  document.getElementById('speedTimerFill').style.width = '100%';
+  document.getElementById('speedTimerFill').style.background = 'linear-gradient(90deg, var(--green), var(--accent))';
+  newG4Question();
+
+  g4.interval = setInterval(() => {
+    if (!document.getElementById('game4-screen').classList.contains('active')) { clearInterval(g4.interval); return; }
+    g4.timeLeft -= 0.1;
+    const pct = (g4.timeLeft / 60) * 100;
+    document.getElementById('speedTimerFill').style.width = pct + '%';
+    if (pct < 30) document.getElementById('speedTimerFill').style.background = 'linear-gradient(90deg, var(--red), #FF8A80)';
+    document.getElementById('g4-time').textContent = Math.ceil(g4.timeLeft) + 's';
+    if (g4.timeLeft <= 0) {
+      clearInterval(g4.interval);
+      document.getElementById('goScore').textContent = g4.score;
+      document.getElementById('gameOverModal').classList.add('open');
+    }
+  }, 100);
+  gameTimers.push(g4.interval);
+}
+
+function newG4Question() {
+  const q = generateQuestion();
+  document.getElementById('speedQuestion').textContent = q.display + ' = ?';
+  const wrongs = generateWrongAnswers(q.root, 3);
+  const opts = shuffle([q.root, ...wrongs]);
+  const btns = document.getElementById('speedAnswers');
+  btns.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'speed-ans-btn';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      const correct = opt === q.root;
+      recordAnswer(q, correct);
+      showFeedback(correct);
+      if (correct) {
+        g4.score += 10;
+        g4.xp += 10;
+        addXP(10);
+        g4.combo++;
+        showStarPop(btn.getBoundingClientRect().left, btn.getBoundingClientRect().top);
+      } else {
+        g4.combo = 0;
+        g4.timeLeft = Math.max(0, g4.timeLeft - 3);
+      }
+      document.getElementById('g4-score').textContent = g4.score;
+      document.getElementById('g4-xp').textContent = g4.xp;
+      document.getElementById('g4-combo').textContent = g4.combo;
+      newG4Question();
+    };
+    btns.appendChild(btn);
+  });
+}
+
+// =====================================================================
+// GAME 5: MEMORY FLIP
+// =====================================================================
+let g5 = { xp: 0, flipped: [], matched: 0, total: 0, locked: false };
+
+function initGame5() {
+  g5.xp = 0; g5.flipped = []; g5.matched = 0; g5.locked = false;
+  const pool = getPool();
+  const shuffled = shuffle([...pool]);
+  const count = Math.min(6, shuffled.length);
+  g5.total = count;
+  document.getElementById('g5-pairs').textContent = '0/' + count;
+
+  const cards = [];
+  shuffled.slice(0, count).forEach(item => {
+    const isSquare = SQUARE_ROOTS.includes(item);
+    const symbol = isSquare ? '√' : '∛';
+    cards.push({ id: item.n + '_q', pairId: item.n, text: `${symbol}${item.n}`, type: 'question' });
+    cards.push({ id: item.n + '_a', pairId: item.n, text: `${item.root}`, type: 'answer' });
+  });
+  shuffle(cards);
+
+  const grid = document.getElementById('memoryGrid');
+  grid.innerHTML = '';
+  grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+  cards.forEach(card => {
+    const el = document.createElement('div');
+    el.className = 'mem-card';
+    el.dataset.id = card.id;
+    el.dataset.pairId = card.pairId;
+    el.dataset.text = card.text;
+    el.textContent = '?';
+    el.onclick = () => flipMemCard(el);
+    grid.appendChild(el);
+  });
+  document.getElementById('g5-xp').textContent = g5.xp;
+}
+
+function flipMemCard(el) {
+  if (g5.locked || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  el.textContent = el.dataset.text;
+  el.classList.add('flipped');
+  g5.flipped.push(el);
+
+  if (g5.flipped.length === 2) {
+    g5.locked = true;
+    const [a, b] = g5.flipped;
+    const isMatch = a.dataset.pairId === b.dataset.pairId && a.dataset.id !== b.dataset.id;
+    const pool = getPool();
+    const item = pool.find(p => p.n == a.dataset.pairId);
+    const isSquare = item ? SQUARE_ROOTS.includes(item) : true;
+    const q = { type: isSquare ? 'square' : 'cube', n: parseInt(a.dataset.pairId) };
+
+    setTimeout(() => {
+      if (isMatch) {
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        a.classList.add('matched'); b.classList.add('matched');
+        g5.matched++;
+        g5.xp += 15;
+        addXP(15);
+        recordAnswer(q, true);
+        showFeedback(true);
+        showStarPop(b.getBoundingClientRect().left, b.getBoundingClientRect().top);
+        document.getElementById('g5-pairs').textContent = g5.matched + '/' + g5.total;
+        document.getElementById('g5-xp').textContent = g5.xp;
+        if (g5.matched === g5.total) { triggerConfetti(); setTimeout(() => initGame5(), 1200); }
+      } else {
+        a.classList.add('wrong-flip'); b.classList.add('wrong-flip');
+        recordAnswer(q, false);
+        showFeedback(false);
+        setTimeout(() => {
+          a.classList.remove('flipped','wrong-flip'); b.classList.remove('flipped','wrong-flip');
+          a.textContent = '?'; b.textContent = '?';
+        }, 600);
+      }
+      g5.flipped = [];
+      g5.locked = false;
+    }, 700);
+  }
+}
+
+// =====================================================================
+// GAME 6: ROOT RUNNER
+// =====================================================================
+let g6 = { xp: 0, dist: 0, speed: 1, running: true, question: null, obsInterval: null };
+
+function initGame6() {
+  g6.xp = 0; g6.dist = 0; g6.running = true;
+  g6.speed = 1 * STATE.adaptSpeed;
+
+  clearInterval(g6.obsInterval);
+  document.getElementById('runnerChar').style.animationPlayState = 'running';
+  document.getElementById('runnerObstacle').style.display = 'none';
+  newG6Question();
+
+  g6.obsInterval = setInterval(() => {
+    if (!document.getElementById('game6-screen').classList.contains('active')) { clearInterval(g6.obsInterval); return; }
+    if (g6.running) {
+      g6.dist += g6.speed;
+      document.getElementById('g6-dist').textContent = Math.floor(g6.dist) + 'm';
+    }
+  }, 100);
+  gameTimers.push(g6.obsInterval);
+}
+
+function newG6Question() {
+  const q = generateQuestion();
+  g6.question = q;
+  document.getElementById('runnerQ').textContent = q.display + ' = ?';
+  document.getElementById('runnerObstacle').textContent = q.display;
+  document.getElementById('runnerObstacle').style.display = 'block';
+
+  const wrongs = generateWrongAnswers(q.root, STATE.ageGroup === 0 ? 2 : 3);
+  const opts = shuffle([q.root, ...wrongs]);
+  const row = document.getElementById('runnerAns');
+  row.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'runner-ans';
+    btn.textContent = opt;
+    btn.onclick = () => checkG6(opt, btn);
+    row.appendChild(btn);
+  });
+  animateObstacle();
+}
+
+function animateObstacle() {
+  const obs = document.getElementById('runnerObstacle');
+  obs.style.right = '-100px';
+  obs.style.transition = 'none';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    obs.style.transition = 'right ' + (4 / STATE.adaptSpeed) + 's linear';
+    obs.style.right = '110%';
+  }));
+}
+
+function checkG6(val, btn) {
+  const correct = val === g6.question.root;
+  recordAnswer(g6.question, correct);
+  showFeedback(correct);
+  if (correct) {
+    g6.xp += 15; addXP(15);
+    showStarPop(btn.getBoundingClientRect().left, btn.getBoundingClientRect().top);
+    g6.running = true; g6.speed = Math.min(3, g6.speed + 0.1);
+    document.getElementById('runnerChar').style.animationPlayState = 'running';
+    document.getElementById('runnerChar').textContent = '🧮';
+    document.getElementById('g6-xp').textContent = g6.xp;
+    setTimeout(() => { if (document.getElementById('game6-screen').classList.contains('active')) newG6Question(); }, 600);
+  } else {
+    g6.speed = Math.max(0.3, g6.speed - 0.2);
+    document.getElementById('runnerChar').textContent = '😵';
+    document.getElementById('runnerChar').classList.add('shake');
+    setTimeout(() => { document.getElementById('runnerChar').classList.remove('shake'); document.getElementById('runnerChar').textContent = '🧮'; }, 500);
+    document.getElementById('g6-xp').textContent = g6.xp;
+  }
+}
+
+// =====================================================================
+// GAME 7: GRID CHALLENGE
+// =====================================================================
+let g7 = { xp: 0, score: 0, selected: new Set(), correct: new Set(), gridType: 'square' };
+
+function initGame7() { g7.xp = 0; g7.score = 0; nextGridRound(); }
+
+function nextGridRound() {
+  g7.selected = new Set();
+  g7.correct = new Set();
+
+  // Decide grid type
+  if (STATE.rootType === 'both') g7.gridType = Math.random() < 0.5 ? 'square' : 'cube';
+  else g7.gridType = STATE.rootType === 'cube' ? 'cube' : 'square';
+
+  const pool = g7.gridType === 'square'
+    ? SQUARE_ROOTS.slice(0, AGE_CONFIG[STATE.ageGroup].sqMax)
+    : CUBE_ROOTS.slice(0, AGE_CONFIG[STATE.ageGroup].cbMax);
+
+  const correctNums = new Set(pool.map(p => p.n));
+  g7.correct = correctNums;
+  const symbol = g7.gridType === 'square' ? 'perfect squares' : 'perfect cubes';
+  document.getElementById('gridInstruction').textContent = `🔲 Select all ${symbol}`;
+
+  const max = g7.gridType === 'square' ? (AGE_CONFIG[STATE.ageGroup].sqMax ** 2) + 30 : (AGE_CONFIG[STATE.ageGroup].cbMax ** 3) + 50;
+  const allNums = [...correctNums];
+  while (allNums.length < 40) {
+    const n = randInt(2, max);
+    if (!correctNums.has(n) && !allNums.includes(n)) allNums.push(n);
+  }
+  shuffle(allNums);
+
+  const grid = document.getElementById('numberGrid');
+  grid.innerHTML = '';
+  allNums.slice(0, 40).forEach(n => {
+    const cell = document.createElement('div');
+    cell.className = 'grid-cell';
+    cell.textContent = n;
+    cell.dataset.num = n;
+    cell.onclick = () => toggleGridCell(cell, n);
+    grid.appendChild(cell);
+  });
+  document.getElementById('g7-score').textContent = g7.score;
+  document.getElementById('g7-xp').textContent = g7.xp;
+}
+
+function toggleGridCell(cell, n) {
+  if (g7.selected.has(n)) { g7.selected.delete(n); cell.classList.remove('selected'); }
+  else { g7.selected.add(n); cell.classList.add('selected'); }
+}
+
+function checkGrid() {
+  let correct = 0, wrong = 0;
+  document.querySelectorAll('.grid-cell').forEach(cell => {
+    const n = parseInt(cell.dataset.num);
+    const isCorrect = g7.correct.has(n);
+    const isSelected = g7.selected.has(n);
+    if (isCorrect && isSelected) { cell.classList.add('correct'); correct++; }
+    else if (!isCorrect && isSelected) { cell.classList.add('wrong-sel'); wrong++; }
+    else if (isCorrect && !isSelected) { cell.classList.add('revealed'); }
+  });
+
+  const total = g7.correct.size;
+  const accuracy = correct / total;
+  const pool = getPool();
+  const item = pool[0];
+  recordAnswer({ type: g7.gridType, n: item ? item.n : 1 }, accuracy >= 0.8);
+  showFeedback(accuracy >= 0.8);
+
+  if (accuracy >= 0.8) {
+    const xpGain = correct * 5;
+    g7.xp += xpGain;
+    addXP(xpGain);
+    g7.score += correct;
+    if (accuracy === 1 && wrong === 0) { triggerConfetti(); showStarPop(window.innerWidth / 2, window.innerHeight / 2); }
+  }
+  document.getElementById('g7-xp').textContent = g7.xp;
+  document.getElementById('g7-score').textContent = g7.score;
+}
+
+// =====================================================================
+// PRACTICE MODE
+// =====================================================================
+let practiceType = 'square';
+
+function setPracticeType(type, btn) {
+  practiceType = type;
+  document.querySelectorAll('#practiceRootToggle .root-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildPracticeList();
+  document.getElementById('practiceSteps').style.display = 'none';
+}
+
+function buildPracticeList() {
+  const list = document.getElementById('practiceTableList');
+  list.innerHTML = '';
+
+  if (practiceType === 'square') {
+    const cfg = AGE_CONFIG[STATE.ageGroup];
+    SQUARE_ROOTS.slice(0, cfg.sqMax).forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'practice-num-btn' + (STATE.masteredSquares.has(item.n) ? ' mastered' : '');
+      btn.innerHTML = `√${item.n}<br><span style="font-size:0.7em;opacity:0.7">=${item.root}</span>`;
+      btn.onclick = () => showPracticeTable(item.n, 'square');
+      list.appendChild(btn);
+    });
+  } else {
+    const cfg = AGE_CONFIG[STATE.ageGroup];
+    CUBE_ROOTS.slice(0, cfg.cbMax).forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'practice-num-btn' + (STATE.masteredCubes.has(item.n) ? ' mastered' : '');
+      btn.innerHTML = `∛${item.n}<br><span style="font-size:0.7em;opacity:0.7">=${item.root}</span>`;
+      btn.onclick = () => showPracticeTable(item.n, 'cube');
+      list.appendChild(btn);
+    });
+  }
+}
+
+function showPracticeTable(n, type) {
+  document.getElementById('practiceSteps').style.display = 'block';
+  const symbol = type === 'square' ? '√' : '∛';
+  const pool = type === 'square' ? SQUARE_ROOTS : CUBE_ROOTS;
+  const item = pool.find(p => p.n === n);
+  if (!item) return;
+
+  document.getElementById('practiceTitle').textContent = `${symbol}${n} = ${item.root}`;
+  const list = document.getElementById('practiceStepsList');
+  list.innerHTML = '';
+
+  const dotColor = COLORS[item.root % COLORS.length];
+
+  if (type === 'square') {
+    // Show the factorization and proof
+    const steps = [
+      { eq: `${n} = ${item.root} × ${item.root}`, hint: 'Perfect square' },
+      { eq: `${symbol}${n} = ${item.root}`, hint: 'Because ' + item.root + '² = ' + n },
+      { eq: `${item.root}² = ${n}`, hint: item.root + ' rows of ' + item.root }
+    ];
+    steps.forEach(step => {
+      const row = document.createElement('div');
+      row.className = 'practice-step';
+      const dots = [];
+      if (n <= 100) {
+        for (let d = 0; d < n; d++) dots.push(`<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${dotColor};margin:2px;animation:popIn 0.3s ease ${d*0.02}s both"></span>`);
+      }
+      row.innerHTML = `<span class="eq">${step.eq}</span><span style="font-size:0.8rem;color:var(--text-light);font-weight:600">${step.hint}</span>`;
+      if (d => d < n) row.innerHTML += `<div class="practice-dots">${dots.join('')}</div>`;
+      list.appendChild(row);
+    });
+  } else {
+    const steps = [
+      { eq: `${n} = ${item.root} × ${item.root} × ${item.root}`, hint: 'Perfect cube' },
+      { eq: `${symbol}${n} = ${item.root}`, hint: 'Because ' + item.root + '³ = ' + n },
+      { eq: `${item.root}³ = ${n}`, hint: item.root + ' layers of ' + item.root + '×' + item.root }
+    ];
+    steps.forEach(step => {
+      const row = document.createElement('div');
+      row.className = 'practice-step';
+      row.innerHTML = `<span class="eq">${step.eq}</span><span style="font-size:0.8rem;color:var(--text-light);font-weight:600">${step.hint}</span>`;
+      list.appendChild(row);
+    });
+    // Multiplication table for this root
+    const header = document.createElement('div');
+    header.style.cssText = 'font-family:var(--font);font-weight:700;font-size:1rem;color:var(--primary);margin:10px 0 6px;';
+    header.textContent = `Powers of ${item.root}:`;
+    list.appendChild(header);
+    [1,2,3,4].forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'practice-step';
+      row.innerHTML = `<span class="eq">${item.root}^${p}</span><span class="eq-ans">${Math.pow(item.root, p)}</span>`;
+      list.appendChild(row);
+    });
+  }
+  list.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// =====================================================================
+// DASHBOARD
+// =====================================================================
+function updateDashboard() {
+  document.getElementById('dash-xp').textContent = STATE.xp;
+  document.getElementById('dash-level').textContent = STATE.level;
+  document.getElementById('dash-acc').textContent = STATE.accuracy + '%';
+  document.getElementById('dash-streak').textContent = STATE.bestCombo;
+  document.getElementById('dash-sq').textContent = STATE.masteredSquares.size;
+  document.getElementById('dash-cb').textContent = STATE.masteredCubes.size;
+
+  const sqWrap = document.getElementById('sqBadges');
+  sqWrap.innerHTML = '';
+  const sqCfg = AGE_CONFIG[STATE.ageGroup];
+  SQUARE_ROOTS.slice(0, sqCfg.sqMax).forEach(item => {
+    const badge = document.createElement('div');
+    badge.className = 'table-badge' + (STATE.masteredSquares.has(item.n) ? ' done' : '');
+    badge.textContent = `√${item.n}` + (STATE.masteredSquares.has(item.n) ? ' ✓' : '');
+    sqWrap.appendChild(badge);
+  });
+
+  const cbWrap = document.getElementById('cbBadges');
+  cbWrap.innerHTML = '';
+  CUBE_ROOTS.slice(0, AGE_CONFIG[STATE.ageGroup].cbMax).forEach(item => {
+    const badge = document.createElement('div');
+    badge.className = 'table-badge' + (STATE.masteredCubes.has(item.n) ? ' done' : '');
+    badge.textContent = `∛${item.n}` + (STATE.masteredCubes.has(item.n) ? ' ✓' : '');
+    cbWrap.appendChild(badge);
+  });
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+document.querySelectorAll('.age-card')[1].classList.add('selected');
+document.addEventListener('dragover', e => e.preventDefault());
+</script>
+</body>
+</html>
