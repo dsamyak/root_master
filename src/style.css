@@ -147,7 +147,7 @@ body {
 .modal-overlay.open { display: flex; opacity: 1; }
 .modal-box { background: var(--card); backdrop-filter: blur(20px); border-radius: 28px; padding: 40px; max-width: 500px; width: 100%; text-align: center; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 30px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1); transform: scale(0.95) translateY(20px); opacity: 0; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
 .modal-overlay.open .modal-box { transform: scale(1) translateY(0); opacity: 1; }
-.modal-box h2 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 900; color: var(--text); background: linear-gradient(135deg, #fff, var(--text-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.modal-box h2 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 900; color: var(--text); background: linear-gradient(135deg, #fff, var(--text-light)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 .modal-box p { margin: 16px 0 28px; color: var(--text-light); font-size: 1.1rem; line-height: 1.5; }
 
 /* GAMES SHARED & SPECIFIC */

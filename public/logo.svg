@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <!-- Background Gradient (Slate depth) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+
+    <!-- Vibrant Root Gradient -->
+    <linearGradient id="rootGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F0B5"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    
+    <!-- Cyber Mint solid drop shadow -->
+    <filter id="cyberGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#00F0B5" flood-opacity="0.4"/>
+    </filter>
+    
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  
+  <!-- Outer Rounded Container -->
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#bgGrad)" stroke="rgba(255,255,255,0.15)" stroke-width="4"/>
+  
+  <!-- Glow Underneath the Root -->
+  <path d="M 60 140 L 85 140 L 120 195 L 175 80 L 200 80" 
+        fill="none" 
+        stroke="rgba(0, 240, 181, 0.4)" 
+        stroke-width="32" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="blur(12px)"/>
+
+  <!-- The Root Symbol (√) -->
+  <path d="M 60 140 L 85 140 L 120 195 L 175 80 L 200 80" 
+        fill="none" 
+        stroke="url(#rootGrad)" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="url(#cyberGlow)"/>
+
+  <!-- Stylized Right Leaf Element -->
+  <path d="M 175 80 C 190 45, 240 35, 215 95 C 205 110, 185 100, 175 80 Z" 
+        fill="#00F0B5" 
+        filter="url(#dropShadow)"/>
+
+  <!-- Stylized Left Leaf Element -->
+  <path d="M 175 80 C 150 45, 110 35, 125 95 C 135 110, 155 100, 175 80 Z" 
+        fill="#6EE7B7" 
+        filter="url(#dropShadow)"/>
+</svg>
