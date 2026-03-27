@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Root Master Pro 🌱</title>
+<link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+<div class="bg-numbers" id="bgNumbers"></div>
+<div class="combo-banner" id="comboBanner">⚡ Combo x<span id="comboNum">0</span>!</div>
+<div class="feedback-overlay">
+  <div class="feedback-msg" id="feedbackMsg">✓</div>
+</div>
+
+<div class="modal-overlay" id="levelUpModal">
+  <div class="modal-box">
+    <div style="font-size:4rem">🌱</div>
+    <h2>Level Up!</h2>
+    <p id="levelUpText">You reached Level <strong id="newLevelNum">2</strong>!</p>
+    <button class="btn btn-primary" onclick="closeModal('levelUpModal')">Keep Going! 🌱</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="gameOverModal">
+  <div class="modal-box">
+    <div style="font-size:4rem">🌿</div>
+    <h2>Time's Up!</h2>
+    <p id="gameOverText">You scored <strong id="goScore">0</strong> points!</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="closeModal('gameOverModal');showScreen('menu-screen')">Menu</button>
+      <button class="btn btn-success" id="playAgainBtn">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- WELCOME -->
+<div class="screen active" id="welcome-screen">
+  <div style="height:40px"></div>
+  <div class="logo">🌱 Root Master Pro</div>
+  <div class="subtitle">Master Square Roots & Cube Roots Through Play!</div>
+  <div style="height:24px"></div>
+  <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);text-align:center">Choose your level to begin:</div>
+  <div class="age-grid">
+    <div class="age-card" onclick="selectAge(0,this)">
+      <div class="emoji">🌱</div>
+      <h3>Beginner</h3>
+      <p>√1–√25 &amp; ∛1–∛27</p>
+    </div>
+    <div class="age-card" onclick="selectAge(1,this)">
+      <div class="emoji">🌿</div>
+      <h3>Intermediate</h3>
+      <p>√1–√100 &amp; ∛1–∛125</p>
+    </div>
+    <div class="age-card" onclick="selectAge(2,this)">
+      <div class="emoji">🌳</div>
+      <h3>Advanced</h3>
+      <p>√1–√225 &amp; ∛1–∛1000</p>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center">
+    <span style="font-family:var(--font);font-weight:700;color:var(--text-light)">Practice:</span>
+    <div class="root-toggle" id="welcomeRootToggle">
+      <button class="root-toggle-btn active" onclick="setRootType('square',this)">√ Square</button>
+      <button class="root-toggle-btn" onclick="setRootType('cube',this)">∛ Cube</button>
+      <button class="root-toggle-btn" onclick="setRootType('both',this)">Both</button>
+    </div>
+  </div>
+  <div style="height:20px"></div>
+  <button class="btn btn-primary" style="font-size:1.1rem;padding:14px 40px" onclick="goToMenu()">Start Learning! 🌱</button>
+  <div style="height:16px"></div>
+  <button class="btn btn-outline" style="font-size:0.9rem" onclick="showScreen('dashboard-screen')">📊 My Progress</button>
+</div>
+
+<!-- MENU -->
+<div class="screen" id="menu-screen">
+  <div style="width:100%;max-width:800px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+      <div class="logo" style="font-size:1.8rem">🌱 Root Master Pro</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="menu-xp">0 XP</span></div>
+        <div class="hud-chip"><span class="icon">🏅</span>Level <span id="menu-level">1</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="menu-acc">--%</span></div>
+        <div class="hud-chip" id="menu-root-badge">√ Square</div>
+      </div>
+    </div>
+    <div class="xp-bar-wrap" style="max-width:100%;margin-bottom:20px"><div class="xp-bar-fill" id="menuXpBar" style="width:0%"></div></div>
+    <div style="font-family:var(--font);font-weight:800;font-size:1.1rem;color:var(--text);margin-bottom:12px">🎮 Choose a Game:</div>
+    <div class="games-grid">
+      <div class="game-card" onclick="startGame(2)"><div class="g-icon">🍀</div><h4>Drag & Match Board</h4></div>
+      <div class="game-card" onclick="startGame(3)"><div class="g-icon">🔬</div><h4>Visual Builder</h4></div>
+      <div class="game-card" onclick="startGame(4)"><div class="g-icon">⚡</div><h4>Speed Tap Challenge</h4></div>
+      <div class="game-card" onclick="startGame(5)"><div class="g-icon">🃏</div><h4>Memory Flip</h4></div>
+      <div class="game-card" onclick="startGame(6)"><div class="g-icon">🏃</div><h4>Root Runner</h4></div>
+      <div class="game-card" onclick="startGame(7)"><div class="g-icon">🌐</div><h4>Grid Challenge</h4></div>
+      <div class="game-card" style="border-color:var(--accent);background:#FFFBEE" onclick="showScreen('practice-screen')"><div class="g-icon">📖</div><h4>Practice Mode</h4></div>
+    </div>
+    <div style="height:20px"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="showScreen('dashboard-screen')">📊 Dashboard</button>
+      <button class="btn btn-outline" onclick="showScreen('welcome-screen')">👤 Change Level</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME 2 — DRAG & MATCH -->
+<div class="screen" id="game2-screen">
+  <div style="width:100%;max-width:540px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g2-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g2-score">0/0</span></div>
+      </div>
+    </div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1.1rem;color:var(--text);text-align:center;margin-bottom:16px">Drag the answers to match the roots!</div>
+    <div class="match-area">
+      <div class="match-col" id="matchEquations"></div>
+      <div class="match-col" id="matchAnswers"></div>
+    </div>
+    <div style="height:16px"></div>
+    <div style="text-align:center"><button class="btn btn-success" id="g2CheckBtn" onclick="checkMatchGame()">Check Answers ✓</button></div>
+  </div>
+</div>
+
+<!-- GAME 3 — VISUAL BUILDER -->
+<div class="screen" id="game3-screen">
+  <div style="width:100%;max-width:520px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g3-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g3-score">0</span></div>
+      </div>
+    </div>
+    <div class="visual-container">
+      <div class="visual-question" id="visualQuestion"></div>
+      <div style="font-family:var(--font);font-weight:700;font-size:0.95rem;color:var(--text-light);margin-bottom:8px" id="visualHint"></div>
+      <div class="groups-display" id="groupsDisplay"></div>
+      <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin-bottom:8px">What is the root?</div>
+      <div class="ans-btns" id="visualAnsBtns"></div>
+    </div>
+  </div>
+</div>
+
+<!-- GAME 4 — SPEED TAP -->
+<div class="screen" id="game4-screen">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g4-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🔥</span><span id="g4-combo">0</span></div>
+        <div class="hud-chip"><span class="icon">⏱️</span><span id="g4-time">60s</span></div>
+      </div>
+    </div>
+    <div class="speed-arena">
+      <div class="speed-timer-bar"><div class="speed-timer-fill" id="speedTimerFill" style="width:100%"></div></div>
+      <div class="speed-question" id="speedQuestion">√? = ?</div>
+      <div style="font-size:0.85rem;color:var(--text-light);font-weight:600;margin-bottom:10px">Tap the correct answer!</div>
+      <div class="speed-answers" id="speedAnswers"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light)">Score: <span id="g4-score">0</span></div>
+  </div>
+</div>
+
+<!-- GAME 5 — MEMORY FLIP -->
+<div class="screen" id="game5-screen">
+  <div style="width:100%;max-width:500px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g5-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🃏</span><span id="g5-pairs">0/0</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin-bottom:12px">Match each root with its answer!</div>
+    <div class="memory-grid" id="memoryGrid"></div>
+  </div>
+</div>
+
+<!-- GAME 6 — ROOT RUNNER -->
+<div class="screen" id="game6-screen">
+  <div style="width:100%;max-width:480px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g6-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">📏</span><span id="g6-dist">0m</span></div>
+      </div>
+    </div>
+    <div class="runner-arena">
+      <div class="runner-speed"></div>
+      <div class="runner-character" id="runnerChar">🧮</div>
+      <div class="runner-ground"></div>
+      <div class="runner-obstacle" id="runnerObstacle" style="display:none"></div>
+    </div>
+    <div style="text-align:center;font-family:var(--font);font-weight:800;font-size:1.2rem;color:var(--primary);margin:10px 0 6px" id="runnerQ">?</div>
+    <div class="runner-ans-row" id="runnerAns"></div>
+  </div>
+</div>
+
+<!-- GAME 7 — GRID CHALLENGE -->
+<div class="screen" id="game7-screen">
+  <div style="width:100%;max-width:500px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="exitGame()">← Back</button>
+      <div style="display:flex;gap:8px">
+        <div class="hud-chip"><span class="icon">⭐</span><span id="g7-xp">0</span></div>
+        <div class="hud-chip"><span class="icon">🎯</span><span id="g7-score">0</span></div>
+      </div>
+    </div>
+    <div class="grid-instruction" id="gridInstruction">Select all perfect squares</div>
+    <div class="number-grid" id="numberGrid"></div>
+    <div style="height:14px"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-success" onclick="checkGrid()">Check ✓</button>
+      <button class="btn btn-outline" onclick="nextGridRound()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="screen" id="practice-screen">
+  <div style="width:100%;max-width:560px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="showScreen('menu-screen')">← Back</button>
+      <div class="hud-chip"><span class="icon">📖</span>Practice Mode</div>
+    </div>
+    <div style="font-family:var(--font);font-weight:800;font-size:1.4rem;color:var(--text);margin-bottom:10px">Practice Root Tables</div>
+    <div class="root-toggle" id="practiceRootToggle">
+      <button class="root-toggle-btn active" onclick="setPracticeType('square',this)">√ Square Roots</button>
+      <button class="root-toggle-btn" onclick="setPracticeType('cube',this)">∛ Cube Roots</button>
+    </div>
+    <div style="font-size:0.9rem;color:var(--text-light);font-weight:600;margin:10px 0 14px">Green = mastered in games</div>
+    <div class="practice-table-list" id="practiceTableList"></div>
+    <div id="practiceSteps" style="display:none">
+      <div style="font-family:var(--font);font-weight:800;font-size:1.3rem;color:var(--primary);margin:16px 0 10px" id="practiceTitle"></div>
+      <div id="practiceStepsList" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div style="height:14px"></div>
+      <button class="btn btn-outline" onclick="document.getElementById('practiceSteps').style.display='none'">← Choose Another</button>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="dashboard-screen">
+  <div style="width:100%;max-width:600px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+      <button class="back-btn" onclick="showScreen('menu-screen')">← Back</button>
+      <div style="font-family:var(--font);font-weight:800;font-size:1.5rem;color:var(--text)">🌳 My Progress</div>
+    </div>
+    <div class="dashboard-grid">
+      <div class="dash-card"><div class="big" id="dash-xp">0</div><div class="lbl">⭐ Total XP</div></div>
+      <div class="dash-card"><div class="big" id="dash-level">1</div><div class="lbl">🏆 Level</div></div>
+      <div class="dash-card"><div class="big" id="dash-acc">0%</div><div class="lbl">🎯 Accuracy</div></div>
+      <div class="dash-card"><div class="big" id="dash-streak">0</div><div class="lbl">🔥 Best Streak</div></div>
+      <div class="dash-card"><div class="big" id="dash-sq">0</div><div class="lbl">√ Sq Roots Mastered</div></div>
+      <div class="dash-card"><div class="big" id="dash-cb">0</div><div class="lbl">∛ Cu Roots Mastered</div></div>
+    </div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin:20px 0 6px">Square Root Progress:</div>
+    <div class="table-badges" id="sqBadges"></div>
+    <div style="font-family:var(--font);font-weight:700;font-size:1rem;color:var(--text-light);margin:16px 0 6px">Cube Root Progress:</div>
+    <div class="table-badges" id="cbBadges"></div>
+    <div style="height:16px"></div>
+    <button class="btn btn-primary" onclick="showScreen('menu-screen')">Back to Menu</button>
+  </div>
+</div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
